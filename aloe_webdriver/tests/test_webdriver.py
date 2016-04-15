@@ -60,6 +60,22 @@ class TestSteps(FeatureTest):
         """
 
     @feature()
+    def test_press_of_anchor_button_by_name(self):
+        """
+        Given I visit test page "link_page"
+        When I press "anchor_button"
+        Then the browser's URL should contain "a_button_pressed"
+        """
+
+    @feature()
+    def test_press_of_anchor_button_by_value(self):
+        """
+        Given I visit test page "link_page"
+        When I press "An Anchor Button"
+        Then the browser's URL should contain "a_button_pressed"
+        """
+
+    @feature()
     def test_I_see_a_form(self):
         """
         When I visit test page "basic_page"
