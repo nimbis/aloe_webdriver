@@ -255,6 +255,12 @@ def field_xpath(field, attribute):
         xpath = './/{field}[@{attr}=%s]'
 
     else:
+        # The string 'input-button' is used to distinguish a search
+        # for an <input type="button"> tag from a search for a
+        # <button> tag. Of course we just want to look for
+        # type="button" not type="input-button".
+        if field == 'input-button':
+            field = 'button'
         xpath = './/input[@{attr}=%s][@type="{field}"]'
 
     return xpath.format(field=field, attr=attribute)
@@ -264,7 +270,13 @@ def find_button(browser, value):
     """
     Find a button with the given value.
 
-    Searches for `submit`, `reset`, `button` and `image` buttons.
+    Searches for the following different kinds of buttons:
+
+        <input type="submit">
+        <input type="reset">
+        <input type="button">
+        <input type="image">
+        <button>
 
     Returns: an :class:`ElementSelector`
     """
@@ -272,6 +284,7 @@ def find_button(browser, value):
         'submit',
         'reset',
         'button',
+        'input-button',
         'image',
     )
 
