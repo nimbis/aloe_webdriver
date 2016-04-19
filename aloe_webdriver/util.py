@@ -245,6 +245,12 @@ def field_xpath(field, attribute):
     if field in ['select', 'textarea']:
         xpath = './/{field}[@{attr}=%s]'
 
+    elif field == 'a-button':
+        if attribute == 'value':
+            xpath = './/a[@role="button"][contains(., %s)]'
+        else:
+            xpath = './/a[@role="button"][@{attr}=%s]'
+
     elif field == 'button':
         if attribute == 'value':
             xpath = './/{field}[contains(., %s)]'
@@ -286,6 +292,7 @@ def find_button(browser, value):
         'button',
         'input-button',
         'image',
+        'a-button',
     )
 
     return reduce(
@@ -407,7 +414,7 @@ def find_field_by_value(browser, field_type, name):
     )
 
     # sort by shortest first (most closely matching)
-    if field_type == 'button':
+    if field_type == 'button' or field_type == 'a-button':
         elems = sorted(elems, key=lambda elem: len(elem.text))
     else:
         elems = sorted(elems,

@@ -10,6 +10,8 @@ from __future__ import absolute_import
 from builtins import str
 # pylint:enable=redefined-builtin
 
+import time
+
 from aloe import step, world
 
 from aloe_webdriver.util import (
@@ -362,13 +364,10 @@ TEXT_FIELDS = (
 )
 
 
-@step('I fill in "([^"]*)" with "([^"]*)"$')
-@step("I fill in '([^']*)' with '([^']*)'$")
-@wait_for
-def fill_in_textfield(self, field_name, value):
+def fill_in_textfield_with_delay_ms(self, field_name, value, delay_ms):
     """
     Fill in the HTML input with given label (recommended), name or id with
-    the given text.
+    the given text, delaying 'delay_ms' between keys.
 
     Supported input types are text, textarea, password, month, time, week,
     number, range, email, url, tel and color.
@@ -392,7 +391,42 @@ def fill_in_textfield(self, field_name, value):
     else:
         field.clear()
 
-    field.send_keys(value)
+    if delay_ms == 0:
+        field.send_keys(value)
+    else:
+        for char in value:
+            field.send_keys(char)
+            time.sleep(delay_ms / 1000.0)
+
+
+@step('I fill in "([^"]*)" with "([^"]*)"$')
+@step("I fill in '([^']*)' with '([^']*)'$")
+@wait_for
+def fill_in_textfield_no_delay(self, field_name, value):
+    """
+    Fill in the HTML input with given label (recommended), name or id with
+    the given text.
+
+    Supported input types are text, textarea, password, month, time, week,
+    number, range, email, url, tel and color.
+    """
+
+    fill_in_textfield_with_delay_ms(self, field_name, value, 0)
+
+
+@step('I slowly fill in "([^"]*)" with "([^"]*)"$')
+@step("I slowly fill in '([^']*)' with '([^']*)'$")
+@wait_for
+def fill_in_textfield_slowly(self, field_name, value):
+    """
+    Fill in the HTML input with given label (recommended), name or id with
+    the given text, waiting a small amount of time (1ms) between each key.
+
+    Supported input types are text, textarea, password, month, time, week,
+    number, range, email, url, tel and color.
+    """
+
+    fill_in_textfield_with_delay_ms(self, field_name, value, 10)
 
 
 @step('I press "([^"]*)"$')
@@ -801,9 +835,16 @@ def press_by_tooltip(self, tooltip):
 
 
 @step(r'I switch to the frame with id "([^"]*)"')
-def switch_to_frame(self, frame):
+def switch_to_frame_with_id(self, frame):
     """Swap Selenium's context to the given frame or iframe."""
     elem = world.browser.find_element_by_id(frame)
+    world.browser.switch_to.frame(elem)
+
+
+@step(r'I switch to the frame with class "([^"]*)"')
+def switch_to_frame_with_class(self, frame):
+    """Swap Selenium's context to the given frame or iframe."""
+    elem = world.browser.find_element_by_class_name(frame)
     world.browser.switch_to.frame(elem)
 
 

@@ -60,6 +60,22 @@ class TestSteps(FeatureTest):
         """
 
     @feature()
+    def test_press_of_anchor_button_by_name(self):
+        """
+        Given I visit test page "link_page"
+        When I press "anchor_button"
+        Then the browser's URL should contain "a_button_pressed"
+        """
+
+    @feature()
+    def test_press_of_anchor_button_by_value(self):
+        """
+        Given I visit test page "link_page"
+        When I press "An Anchor Button"
+        Then the browser's URL should contain "a_button_pressed"
+        """
+
+    @feature()
     def test_I_see_a_form(self):
         """
         When I visit test page "basic_page"
@@ -76,6 +92,17 @@ class TestSteps(FeatureTest):
         And I fill in "Password: " with "neat"
         When I press "Submit!"
         Then The browser's URL should contain "bio=everything"
+        """
+
+    @feature()
+    def test_I_slowly_fill_in(self):
+        """
+        When I visit test page "slow_text_field"
+        And I fill in "input" with "input"
+        Then I should see "Fast: iininpinpu Slow: input"
+        When I visit test page "slow_text_field"
+        And I slowly fill in "input" with "input"
+        Then I should see "Fast: Slow: input"
         """
 
     @feature()
@@ -272,4 +299,32 @@ class TestSteps(FeatureTest):
         And I submit the form with id "the-form"
         Then the browser's URL should contain "bio="
         And the browser's URL should contain "user="
+        """
+
+    @feature()
+    def test_switch_frame_by_id(self):
+        """
+        When I visit test page "frame_page"
+        Then I should see "This is the main page content"
+        And I should not see "This is the frame content"
+        When I switch to the frame with id "frame_id"
+        Then I should not see "This is the main page content"
+        And I should see "This is the frame content"
+        When I switch back to the main view
+        Then I should see "This is the main page content"
+        And I should not see "This is the frame content"
+        """
+
+    @feature()
+    def test_switch_frame_by_class(self):
+        """
+        When I visit test page "frame_page"
+        Then I should see "This is the main page content"
+        And I should not see "This is the frame content"
+        When I switch to the frame with class "frame_class"
+        Then I should not see "This is the main page content"
+        And I should see "This is the frame content"
+        When I switch back to the main view
+        Then I should see "This is the main page content"
+        And I should not see "This is the frame content"
         """
