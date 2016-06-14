@@ -11,6 +11,7 @@ from builtins import str
 # pylint:enable=redefined-builtin
 
 import operator
+import sys
 from copy import copy
 from time import time, sleep
 from functools import wraps
@@ -535,8 +536,12 @@ def retry_on_timeout(func):
             except TimeoutException:
                 retries -= 1
                 if retries > 0:
+                    sys.stderr.write("retry_on_timeout: Retrying with "
+                                     "{} retries remaining".format(retries))
                     continue
                 else:
+                    sys.stderr.write("retry_on_timeout: Not retrying anymore"
+                                     "---allowing exception to pass through")
                     raise
 
     return wrapped
