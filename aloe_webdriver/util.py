@@ -13,6 +13,7 @@ from builtins import str
 import operator
 from copy import copy
 from time import time, sleep
+from functools import wraps
 from selenium.common.exceptions import TimeoutException
 
 try:
@@ -486,6 +487,7 @@ def wait_for(func):
     for (default 15).
     """
 
+    @wraps(func)
     def wrapped(*args, **kwargs):
         timeout = kwargs.pop('timeout', TIMEOUT)
 
@@ -523,6 +525,7 @@ def retry_on_timeout(func):
     for (default 5).
     """
 
+    @wraps(func)
     def wrapped(*args, **kwargs):
         retries = kwargs.pop('retries', RETRIES)
 
