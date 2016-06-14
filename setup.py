@@ -11,7 +11,7 @@ if __name__ == '__main__':
             open('README.md') as readme:
         setup(
             name='aloe_webdriver',
-            use_scm_version=True,
+            version="0.5.2+nimbis.retry.on.timeout",
             description='Selenium webdriver extension for Aloe',
             author=", ".join((
                 'Alexey Kotlyarov',
